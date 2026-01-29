@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FiHeart, FiMenu, FiSearch, FiShoppingCart, FiUser } from "react-icons/fi";
+import { FiHeart, FiMenu, FiSearch, FiShoppingCart, FiUser, FiX } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -21,117 +22,94 @@ const Header = () => {
   ];
 
   return (
-    <header className="sticky z-50 top-0 transition-all duration-300">
-      {/* 🔹 Top Header Section */}
-      <div
-        className={`w-full transition-all duration-300 ${
-          isScrolled
-            ? "bg-gray-100/95 backdrop-blur shadow-md py-4"
-            : "bg-gray-100 py-8"
-        }`}
-      >
-        <div className="max-w-9xl mx-auto px-6 sm:px-8 lg:px-10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10">
-            {/* Logo + Mobile Menu Button */}
-            <div className="flex items-center justify-between w-full md:w-auto">
-              <a
-                href="/"
-                className="text-3xl md:text-4xl font-extrabold text-pink-600 tracking-wide"
-              >
-                ChronoMist
-              </a>
-              <button
-                className="md:hidden text-gray-700 hover:text-pink-600"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label="Toggle Mobile Menu"
-              >
-                <FiMenu size={28} />
-              </button>
-            </div>
+    <header className={`sticky z-50 top-0 transition-all duration-300 ${isScrolled ? "bg-black/80 backdrop-blur-md shadow-lg border-b border-white/10" : "bg-transparent"
+      }`}>
 
-            {/* Search Bar */}
-            <div className="w-full md:max-w-lg">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search for products..."
-                  className="w-full px-5 py-3 md:py-3.5 text-base border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-500"
-                />
-                <button
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-pink-600"
-                  aria-label="Search button"
+      {/* 🔹 Main Header Section */}
+      <div className="w-full">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
+          <div className="flex items-center justify-between h-20">
+
+            {/* Logo */}
+            <motion.a
+              href="/"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="text-2xl md:text-3xl font-bold text-white tracking-widest uppercase font-serif"
+            >
+              Chrono<span className="text-gold-400">Mist</span>
+            </motion.a>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex space-x-8">
+              {navItems.map((item) => (
+                <a
+                  key={item.id}
+                  href={item.link}
+                  className="text-sm font-medium text-gray-300 hover:text-gold-400 transition-colors tracking-wide uppercase"
                 >
-                  <FiSearch size={20} />
-                </button>
-              </div>
-            </div>
+                  {item.name}
+                </a>
+              ))}
+            </nav>
 
-            {/* Icons */}
-            <div className="flex items-center justify-end w-full md:w-auto space-x-6 md:space-x-8">
-              <button
-                className="relative p-2 text-gray-700 hover:text-pink-600"
-                aria-label="Wishlist"
-              >
-                <FiHeart size={24} />
-                <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+            {/* Icons & Mobile Toggle */}
+            <div className="flex items-center space-x-6">
+              <motion.button whileHover={{ scale: 1.1 }} className="text-gray-300 hover:text-gold-400 transition">
+                <FiSearch size={22} />
+              </motion.button>
+
+              <motion.button whileHover={{ scale: 1.1 }} className="relative text-gray-300 hover:text-gold-400 transition hidden sm:block">
+                <FiHeart size={22} />
+                <span className="absolute -top-2 -right-2 bg-gold-500 text-black text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
                   3
                 </span>
-              </button>
-              <button
-                className="relative p-2 text-gray-700 hover:text-pink-600"
-                aria-label="Cart"
-              >
-                <FiShoppingCart size={24} />
-                <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              </motion.button>
+
+              <motion.button whileHover={{ scale: 1.1 }} className="relative text-gray-300 hover:text-gold-400 transition">
+                <FiShoppingCart size={22} />
+                <span className="absolute -top-2 -right-2 bg-gold-500 text-black text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
                   5
                 </span>
-              </button>
-              <button
-                className="p-2 text-gray-700 hover:text-pink-600"
-                aria-label="User"
-              >
-                <FiUser size={24} />
-              </button>
+              </motion.button>
+
+              <div className="md:hidden">
+                <button
+                  className="text-gray-300 hover:text-gold-400 transition"
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                >
+                  {isMobileMenuOpen ? <FiX size={28} /> : <FiMenu size={28} />}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 🔸 Navigation Bar */}
-      <div className="bg-pink-950">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
-          {/* Desktop Menu */}
-          <nav className="hidden md:flex justify-center py-4">
-            <ul className="flex flex-wrap gap-x-10 text-lg font-medium text-white">
-              {navItems.map((item) => (
-                <li key={item.id}>
-                  <a
-                    href={item.link}
-                    className="hover:text-pink-300 transition-colors"
-                  >
-                    {item.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          {/* Mobile Menu */}
-          {isMobileMenuOpen && (
-            <div className="md:hidden mt-2 bg-white rounded-lg shadow-md p-5 space-y-4 text-pink-950 text-center">
+      {/* 🔸 Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-black/95 border-b border-white/10 overflow-hidden"
+          >
+            <div className="px-6 py-4 space-y-4">
               {navItems.map((item) => (
                 <a
                   key={item.id}
                   href={item.link}
-                  className="block hover:text-pink-600 text-lg font-medium"
+                  className="block text-gray-300 hover:text-gold-400 text-lg font-medium tracking-wide"
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.name}
                 </a>
               ))}
             </div>
-          )}
-        </div>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
